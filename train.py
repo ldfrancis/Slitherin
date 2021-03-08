@@ -1,6 +1,7 @@
 import gym
 import gym_slitherin
 from model import *
+import os
 import random
 from pathlib import Path
 import argparse
@@ -117,6 +118,8 @@ def main():
 
   env = gym.make(f"Slitherin{env_nb_snakes}-v0")
 
+  os.makedirs("models", exist_ok=True)
+
   # set the obs/act dim all agents have the same observation and action space
   obs_dim = [9,9,1]
   act_dim = env.action_space[0].shape
@@ -149,7 +152,7 @@ def main():
   lobs = [None,None,None,None]
 
   # base path
-  base = Path("./")
+  base = Path("SLITHERIN’/")
 
   managers = create_cpts(nagents, actors, critics, model)
 
@@ -158,15 +161,12 @@ def main():
   with open("stats.txt", "r+") as f:
     contents = f.read()
   vals = contents.split("\n")
-  print(vals)
   if len(vals) > 0:
     try:
       l_epoch = int(vals[-2].split(" ")[0])+1
-      print("lepoch0", l_epoch)
     except:
       l_epoch = 0
 
-  print("lepoch",l_epoch)
   epoch = 0
   pause = False
 
